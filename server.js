@@ -8,6 +8,13 @@ const io = new Server(server);
 
 app.use(express.static('public'));
 
+//when client connects
+io.on('connection', (socket) => {
+  console.log('user connected');
+
+  socket.emit('msgToClient', 'Welcome! Have a nice chat!' )
+});
+
 server.listen(3000, () => {
   console.log('Server running on port: 3000');
 });
