@@ -14,8 +14,9 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('msgToClient', 'A new user has joined');
 
-  socket.on('userDisconnect', () => {
+  socket.on('disconnect', () => {
     io.emit('msgToClient', 'User disconnected');
+    
   });
 });
 
