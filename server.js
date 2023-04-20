@@ -10,11 +10,13 @@ app.use(express.static('public'));
 
 //when client connects
 io.on('connection', (socket) => {
-  console.log('user connected');
-
   socket.emit('msgToClient', 'Welcome! Have a nice chat!');
 
   socket.broadcast.emit('msgToClient', 'A new user has joined');
+
+  socket.on('userDisconnect', () => {
+    io.emit('msgToClient', 'User disconnected');
+  });
 });
 
 server.listen(3000, () => {
