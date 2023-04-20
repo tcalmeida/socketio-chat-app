@@ -12,7 +12,9 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
   console.log('user connected');
 
-  socket.emit('msgToClient', 'Welcome! Have a nice chat!' )
+  socket.emit('msgToClient', 'Welcome! Have a nice chat!');
+
+  socket.broadcast.emit('msgToClient', 'A new user has joined');
 });
 
 server.listen(3000, () => {
