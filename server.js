@@ -16,9 +16,15 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     io.emit('msgToClient', 'User disconnected');
-    
   });
+
+  socket.on('userChatMessage', (userMsg) => {
+    console.log(userMsg)
+    io.emit('msgToClient', userMsg)
+  })
 });
+
+
 
 server.listen(3000, () => {
   console.log('Server running on port: 3000');
