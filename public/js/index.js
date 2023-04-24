@@ -44,6 +44,11 @@ function displayMessage(message) {
 }
 
 function manageRoomName(room) {
-    roomName. innerText = room
+  roomName.innerText = room;
 }
 
+function manageUserList(users) {
+  userList.innerHTML = `
+    ${users.map((user) => `<li>${user.username}</li>`).join('')}
+    `;
+}
