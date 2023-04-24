@@ -11,10 +11,11 @@ function getUser(id) {
   return users.find((user) => user.id === id);
 }
 
-function exitUser() {
-  const userIndex = user.findIndex((user) => user.id === id);
+function exitUser(id) {
+  const userIndex = users.findIndex((user) => user.id === id);
+  
   if (userIndex !== -1) {
-    return users.splice(index, 1)[0];
+    return users.splice(userIndex, 1)[0];
   }
 }
 
