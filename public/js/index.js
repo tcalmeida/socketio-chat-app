@@ -1,14 +1,20 @@
 const chatRoomForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
+const roomName = document.getElementById('room-name');
+const userList = document.getElementById('users');
 
 //parse url params
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
-console.log(username, room);
-
 const socket = io();
+socket.emit('enterRoom', { username, room });
+
+socket.on('UsersOnRooms', ({ room, users }) => {
+  ManageRoomName(room);
+  ManageUserList(users);
+});
 
 socket.on('msgToClient', (message) => {
   displayMessage(message);
@@ -36,3 +42,4 @@ function displayMessage(message) {
             </p>`;
   document.querySelector('.chat-messages').appendChild(newDiv);
 }
+
