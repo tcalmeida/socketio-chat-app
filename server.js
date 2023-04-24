@@ -2,7 +2,12 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const formatMessage = require('./utils/formatMessage');
-const { enterUser, getUser } = require('./utils/controlUser');
+const {
+  enterUser,
+  getUser,
+  exitUser,
+  getRoomUsers,
+} = require('./utils/controlUser');
 
 const app = express();
 const server = http.createServer(app);
@@ -31,7 +36,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    io.emit('msgToClient', formatMessage(adminText, `user disconnected`));
+    const user = exitUser(socket.id);
+    if (user) {
+      io.to(user.room).emit(
+        'msgToClient',
+        formatMessage(adminText, `${user.username} disconnected`)
+      );
+    }
   });
 
   socket.on('userChatMessage', (userMsg) => {
