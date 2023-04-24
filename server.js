@@ -2,12 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const formatMessage = require('./utils/formatMessage');
-const {
-  enterUser,
-  getUser,
-  exitUser,
-  getRoomUsers,
-} = require('./utils/controlUser');
+const { enterUser, getUser, exitUser, getRoomUsers } = require('./utils/controlUser');
 
 const app = express();
 const server = http.createServer(app);
@@ -33,15 +28,25 @@ io.on('connection', (socket) => {
         'msgToClient',
         formatMessage(adminText, `${user.username} has joined the room`)
       );
+
+    io.to(user.room).emit('UsersOnRooms', {
+      room: user.room,
+      users: getRoomUsers(user.room),
+    });
   });
 
   socket.on('disconnect', () => {
     const user = exitUser(socket.id);
+
     if (user) {
       io.to(user.room).emit(
         'msgToClient',
         formatMessage(adminText, `${user.username} disconnected`)
       );
+      io.to(user.room).emit('UsersOnRooms', {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
     }
   });
 
