@@ -12,8 +12,8 @@ const socket = io();
 socket.emit('enterRoom', { username, room });
 
 socket.on('UsersOnRooms', ({ room, users }) => {
-  ManageRoomName(room);
-  ManageUserList(users);
+  manageRoomName(room);
+  manageUserList(users);
 });
 
 socket.on('msgToClient', (message) => {
@@ -41,5 +41,9 @@ function displayMessage(message) {
               ${message.text}
             </p>`;
   document.querySelector('.chat-messages').appendChild(newDiv);
+}
+
+function manageRoomName(room) {
+    roomName. innerText = room
 }
 
