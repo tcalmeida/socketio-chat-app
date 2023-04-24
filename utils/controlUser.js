@@ -14,7 +14,7 @@ function getUser(id) {
 function exitUser() {
   const userIndex = user.findIndex((user) => user.id === id);
   if (userIndex !== -1) {
-    return users.splice(index, 1);
+    return users.splice(index, 1)[0];
   }
 }
 
