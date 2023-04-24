@@ -18,6 +18,8 @@ function exitUser() {
   }
 }
 
+function getRoomUsers(room) {
+    return users.filter((user) => user.room === room);
+  }
 
-
-module.exports = { enterUser, getUser, exitUser };
+module.exports = { enterUser, getUser, exitUser, getRoomUsers };
