@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
 
   socket.on('userChatMessage', (userMsg) => {
     const user = getUser(socket.id);
-    console.log(user);
     io.to(user.room).emit('msgToClient', formatMessage(user.username, userMsg));
   });
 });
