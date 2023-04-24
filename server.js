@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const formatMessage = require('./utils/formatMessage');
-const {enterUser, getUser} = require('./utils/controlUser')
+const { enterUser, getUser } = require('./utils/controlUser');
 
 const app = express();
 const server = http.createServer(app);
@@ -13,23 +13,25 @@ app.use(express.static('public'));
 const adminText = 'SimpleBot';
 
 io.on('connection', (socket) => {
-    socket.on('enterRoom', (username, room) => {
-      const user = enterUser(socket.id, username, room)
-      socket.join(user.room)
+  socket.on('enterRoom', ({ username, room }) => {
+    const user = enterUser(socket.id, username, room);
+    socket.join(user.room);
 
-      socket.emit(
+    socket.emit(
+      'msgToClient',
+      formatMessage(adminText, 'Welcome! Have a nice chat!')
+    );
+
+    socket.broadcast
+      .to(user.room)
+      .emit(
         'msgToClient',
-        formatMessage(adminText, 'Welcome! Have a nice chat!')
+        formatMessage(adminText, `${user.username} has joined the room`)
       );
-    
-      socket.broadcast.emit(
-        'msgToClient',
-        formatMessage(adminText, 'A new user has joined')
-      );
-    } )
+  });
 
   socket.on('disconnect', () => {
-    io.emit('msgToClient', formatMessage(adminText, 'User disconnected'));
+    io.emit('msgToClient', formatMessage(adminText, `user disconnected`));
   });
 
   socket.on('userChatMessage', (userMsg) => {
