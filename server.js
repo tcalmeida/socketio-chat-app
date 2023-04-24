@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const formatMessage = require('./utils/formatMessage');
+const {enterUser, getUser} = require('./utils/controlUser')
 
 const app = express();
 const server = http.createServer(app);
@@ -11,17 +12,21 @@ app.use(express.static('public'));
 
 const adminText = 'SimpleBot';
 
-//when client connects
 io.on('connection', (socket) => {
-  socket.emit(
-    'msgToClient',
-    formatMessage(adminText, 'Welcome! Have a nice chat!')
-  );
+    socket.on('enterRoom', (username, room) => {
+      const user = enterUser(socket.id, username, room)
+      socket.join(user.room)
 
-  socket.broadcast.emit(
-    'msgToClient',
-    formatMessage(adminText, 'A new user has joined')
-  );
+      socket.emit(
+        'msgToClient',
+        formatMessage(adminText, 'Welcome! Have a nice chat!')
+      );
+    
+      socket.broadcast.emit(
+        'msgToClient',
+        formatMessage(adminText, 'A new user has joined')
+      );
+    } )
 
   socket.on('disconnect', () => {
     io.emit('msgToClient', formatMessage(adminText, 'User disconnected'));
