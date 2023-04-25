@@ -10,7 +10,7 @@ const io = new Server(server);
 
 app.use(express.static('public'));
 
-const adminText = 'SimpleBot';
+const adminText = 'ElementalBot';
 
 io.on('connection', (socket) => {
   socket.on('enterRoom', ({ username, room }) => {
