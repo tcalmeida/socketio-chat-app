@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const formatMessage = require('./utils/formatMessage');
 const { enterUser, getUser, exitUser, getRoomUsers } = require('./utils/controlUser');
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
@@ -19,7 +20,7 @@ io.on('connection', (socket) => {
 
     socket.emit(
       'msgToClient',
-      formatMessage(adminText, 'Welcome! Have a nice chat!')
+      formatMessage(adminText, `Welcome ${user.username}! Have a nice chat!`)
     );
 
     socket.broadcast
@@ -56,6 +57,10 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log('Server running on port: 3000');
+server.listen(process.env.PORT || 3000, () => {
+  console.info(
+    `Server running on port: ${
+      typeof process.env.PORT === 'string' ? process.env.PORT : 3000
+    } `
+  );
 });
