@@ -18,5 +18,7 @@ A chat application that allows user to send and receive messages from several us
 ## Installation
 
 1. Clone repository
-2. Install packages `npm i`
-3. Run server `npm run start`
+2. Create a .env file according to example.env if you want to change server PORT
+3. Install packages `npm i`
+4. Run server `npm run start`
+5. Access `https://localhost:3000` or your selected PORT
