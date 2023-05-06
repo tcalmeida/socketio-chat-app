@@ -1,6 +1,6 @@
 #SocketIO Chat App
 
-A chat application that allows the user to send and receive messages from several other users in real time. 
+A chat application that allows the user to send and receive messages from several other users in real time
 
 ## Features
 
